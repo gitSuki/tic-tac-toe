@@ -1,12 +1,13 @@
 import random
 
-class Game():
+class Game:
+    turn_count = 0
     def __init__(self):
         self.welcome()
         self.get_usernames()
         self.first_turn_randomize()
         self.create_gameboard()
-        self.turn()
+        Turn()
     def __repr__(self):
         pass
 
@@ -33,10 +34,10 @@ class Game():
     #Randomizes who gets the first turn
     def first_turn_randomize(self):
         self.order = random.randint(1, 2)
-        self.players_dict = dict(zip([1, 2], self.player_names))
+        Game.players_dict = dict(zip([1, 2], self.player_names))
         # print(self.players_dict)
         # print(self.order)
-        print (f"{self.players_dict[self.order]} (Player {self.order}) will go first!")
+        print (f"{Game.players_dict[self.order]} (Player {self.order}) will go first!")
 
     def create_gameboard(self):
         self.board = '''
@@ -48,9 +49,27 @@ class Game():
         '''
         print(self.board)
 
-    turn_count = 0
-    def turn(self):
-        self.turn_count += 1
-        print(f"Turn {self.turn_count}: Please input a number (1-9) to claim a location on the gameboard grid.")
+
+class Turn(Game):
+    def game_loop(self):
+        PlayerOneTurn()
+        PlayerTwoTurn()
+
+    def __init__(self):
+        self.game_loop()
+    
+    def counter():
+        Game.turn_count += 1
+        print(f"Turn {Game.turn_count}: Please input a number (1-9) to claim a location on the gameboard grid.")
+
+class PlayerOneTurn(Turn):
+    def __init__(self):
+        Turn.counter()
+        print(Game.players_dict[1])
+
+class PlayerTwoTurn(Turn):
+    def __init__(self):
+        Turn.counter()
+        print(Game.players_dict[2])
 
 game = Game()
