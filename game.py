@@ -2,7 +2,10 @@ import random
 
 class Game():
     def __init__(self):
-        pass
+        self.welcome()
+        self.get_usernames()
+        self.first_turn_randomize()
+        self.gameboard()
     def __repr__(self):
         pass
 
@@ -12,21 +15,26 @@ class Game():
         print("")
         print("Written by gitSuki in Python 3.8.10")
         print("")
+        print("")
 
-    #Gets usernames
+    #Asks user to input usernames which are assigned to variables
     def get_usernames(self):
-        print("Please input Player 1's Name:")
+        print("Please input Player 1's name:")
         player_1_name = input()
-        print("Please input Player 2's Name:")
+        print("")
+        print("Please input Player 2's name:")
         player_2_name = input()
         self.player_1_name = player_1_name
         self.player_2_name = player_2_name
+        print("")
 
     #Randomizes who gets the first turn
     def first_turn_randomize(self):
         player_1 = 1
-        played_2 = 0
-        return random.choices([player_1, player_2])
+        player_2 = 2
+        order = random.choices([player_1, player_2])
+        self.player_order = order
+        print (f"Player {self.player_order} will go first!")
 
     def gameboard(self):
         print('''
@@ -38,5 +46,3 @@ class Game():
         ''')
 
 game = Game()
-game.welcome()
-game.get_usernames()
