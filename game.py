@@ -5,7 +5,8 @@ class Game():
         self.welcome()
         self.get_usernames()
         self.first_turn_randomize()
-        self.gameboard()
+        self.create_gameboard()
+        self.turn()
     def __repr__(self):
         pass
 
@@ -19,30 +20,37 @@ class Game():
 
     #Asks user to input usernames which are assigned to variables
     def get_usernames(self):
-        print("Please input Player 1's name:")
+        print("Please input Player 1's name: (The order will be randomized before the game begins)")
         player_1_name = input()
         print("")
         print("Please input Player 2's name:")
         player_2_name = input()
         self.player_1_name = player_1_name
         self.player_2_name = player_2_name
+        self.player_names = [self.player_1_name, self.player_2_name]
         print("")
 
     #Randomizes who gets the first turn
     def first_turn_randomize(self):
-        player_1 = 1
-        player_2 = 2
-        order = random.choices([player_1, player_2])
-        self.player_order = order
-        print (f"Player {self.player_order} will go first!")
+        self.order = random.randint(1, 2)
+        self.players_dict = dict(zip([1, 2], self.player_names))
+        # print(self.players_dict)
+        # print(self.order)
+        print (f"{self.players_dict[self.order]} (Player {self.order}) will go first!")
 
-    def gameboard(self):
-        print('''
+    def create_gameboard(self):
+        self.board = '''
          1 | 2 | 3
         ---+---+---
          4 | 5 | 6
         ---+---+---
          7 | 8 | 9
-        ''')
+        '''
+        print(self.board)
+
+    turn_count = 0
+    def turn(self):
+        self.turn_count += 1
+        print(f"Turn {self.turn_count}: Please input a number (1-9) to claim a location on the gameboard grid.")
 
 game = Game()
