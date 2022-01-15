@@ -7,7 +7,7 @@ class Game:
         self.get_usernames()
         self.first_turn_randomize()
         self.create_gameboard()
-        Turn()
+        self.game_loop()
     def __repr__(self):
         pass
 
@@ -49,27 +49,22 @@ class Game:
         '''
         print(self.board)
 
-
-class Turn(Game):
-    def game_loop(self):
-        PlayerOneTurn()
-        PlayerTwoTurn()
-
-    def __init__(self):
-        self.game_loop()
-    
-    def counter():
+    def counter(self):
         Game.turn_count += 1
         print(f"Turn {Game.turn_count}: Please input a number (1-9) to claim a location on the gameboard grid.")
+        print("")
 
-class PlayerOneTurn(Turn):
-    def __init__(self):
-        Turn.counter()
-        print(Game.players_dict[1])
+    def user_input(self):
+        user_input = input()
+        self.user_input = user_input
+        print("Input was " + self.user_input)
+        
+    def turn(self):
+        self.counter()
+        print("Player 1 is " + Game.players_dict[1])
+        self.user_input()
 
-class PlayerTwoTurn(Turn):
-    def __init__(self):
-        Turn.counter()
-        print(Game.players_dict[2])
+    def game_loop(self):
+        self.turn()
 
 game = Game()
