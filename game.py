@@ -55,14 +55,27 @@ class Game:
         print("")
 
     def user_input(self):
-        user_input = input()
+        while True:
+            user_input = input()
+            if len(user_input) != 1 or user_input not in self.board or user_input.isnumeric() == False:
+                print ("Error - invalid input. Please try again with a valid number:")
+                print("")
+                continue
+            else:
+                break
         self.user_input = user_input
         print("Input was " + self.user_input)
+
+    def alter_gameboard(self):
+        self.new_board = self.board.replace(self.user_input, "X")
+        print(self.new_board)
+        self.board = self.new_board
         
     def turn(self):
         self.counter()
         print("Player 1 is " + Game.players_dict[1])
         self.user_input()
+        self.alter_gameboard()
 
     def game_loop(self):
         self.turn()
