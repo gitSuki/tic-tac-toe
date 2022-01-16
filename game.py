@@ -7,7 +7,7 @@ class Game:
         self.get_usernames()
         self.first_turn_randomize()
         self.create_gameboard()
-        Turn(self)
+        self.game_loop()
 
     def __repr__(self):
         pass
@@ -27,18 +27,20 @@ class Game:
         print("")
         print("Please input Player 2's name:")
         player_2_name = input()
-        player1 = Player(player_1_name)
-        player2 = Player(player_2_name)
-        self.player_names = [player1.name, player2.name]
+        self.player1 = Player(player_1_name, 1, "X")
+        self.player2 = Player(player_2_name, 2, "O")
+        print("")
         print("")
 
     #Randomizes who gets the first turn
     def first_turn_randomize(self):
-        self.order = random.randint(1, 2)
-        self.players_dict = dict(zip([1, 2], self.player_names))
-        # print(self.players_dict)
-        # print(self.order)
-        print (f"{self.players_dict[self.order]} (Player {self.order}) will go first!")
+        randomized_order = random.randint(1, 2)
+        if randomized_order == 2:
+            self.player1.order = 2
+            self.player1.order = 1        
+            self.players_dict = dict(zip([1, 2], [self.player2, self.player1]))
+        else: self.players_dict = dict(zip([1, 2], [self.player1, self.player2]))
+        print (f"{self.players_dict[1].name} (Player {randomized_order}) will go first!")
 
     def create_gameboard(self):
         self.board = '''
@@ -50,14 +52,21 @@ class Game:
         '''
         print(self.board)
 
+    def game_loop(self):
+        Turn(self, self.players_dict[1])
+
+
 class Player:
-    def __init__(self, name,):
+    def __init__(self, name, order, replace_string):
         self.name = name
+        self.order = order
+        self.replace_string = replace_string
 
 
 class Turn:
-    def __init__(self, game):
+    def __init__(self, game, player):
         self.game = game
+        self.player = player
         self.turn_count = game.turn_count
         self.board = game.board
         self.turn()
@@ -65,7 +74,6 @@ class Turn:
     def counter(self):
         self.turn_count += 1
         print(f"Turn {self.turn_count}: Please input a number (1-9) to claim a location on the gameboard grid.")
-        print("")
 
     def user_input(self):
         while True:
@@ -80,14 +88,15 @@ class Turn:
         print("Input was " + self.user_input)
 
     def alter_gameboard(self):
-        self.new_board = self.board.replace(self.user_input, "X")
+        self.new_board = self.board.replace(self.user_input, self.player.replace_string)
         print(self.new_board)
         self.game.board = self.new_board
         
     def turn(self):
+        print(f"The player is {self.player.name}. Player #{str(self.player.order)}")
         self.counter()
-        print("Player 1 is " + self.game.players_dict[1])
         self.user_input()
         self.alter_gameboard()
+
 
 game = Game()
