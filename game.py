@@ -12,7 +12,6 @@ class Game:
     def __repr__(self):
         pass
 
-    #Prints Welcome Message
     def welcome(self):
         print("Welcome to Tic-Tac-Toe!")
         print("")
@@ -20,8 +19,8 @@ class Game:
         print("")
         print("")
 
-    #Asks user to input usernames which are assigned to variables
     def get_usernames(self):
+        #Asks user to input usernames which are assigned to variables
         print("Please input Player 1's name: (The order will be randomized before the game begins)")
         player_1_name = input()
         print("")
@@ -32,8 +31,8 @@ class Game:
         print("")
         print("")
 
-    #Randomizes who gets the first turn
     def first_turn_randomize(self):
+        #Randomizes who gets the first turn
         randomized_order = random.randint(1, 2)
         if randomized_order == 2:
             self.player1.order = 2
@@ -53,7 +52,15 @@ class Game:
         print(self.board)
 
     def game_loop(self):
-        Turn(self, self.players_dict[1])
+        while self.turn_count < 9:
+            #If turn count is odd, the player who was randomized to go first goes
+            if self.turn_count % 2 != 0:
+                Turn(self, self.players_dict[1])
+            #Otherwise, the player who was randomized to go second goes
+            else:
+                Turn(self, self.players_dict[2])
+        else:
+            print("Game Over")
 
 
 class Player:
@@ -65,17 +72,21 @@ class Player:
 
 class Turn:
     def __init__(self, game, player):
+        #Grabs the relevant values from the Player and Game classes
         self.game = game
         self.player = player
         self.turn_count = game.turn_count
         self.board = game.board
-        self.turn()
+        self.run_turn()
     
     def counter(self):
+        #Updates the counter within both the Turn and Game classes
         self.turn_count += 1
+        self.game.turn_count = self.turn_count
         print(f"Turn {self.turn_count}: Please input a number (1-9) to claim a location on the gameboard grid.")
 
     def user_input(self):
+        #Loops until the user gives a valid input that can be replaced on the gameboard
         while True:
             user_input = input()
             if len(user_input) != 1 or user_input not in self.board or user_input.isnumeric() == False:
@@ -85,15 +96,16 @@ class Turn:
             else:
                 break
         self.user_input = user_input
-        print("Input was " + self.user_input)
 
     def alter_gameboard(self):
+        #Replaces the existing numbers on the gameboard with the user's mark
         self.new_board = self.board.replace(self.user_input, self.player.replace_string)
         print(self.new_board)
         self.game.board = self.new_board
         
-    def turn(self):
-        print(f"The player is {self.player.name}. Player #{str(self.player.order)}")
+    def run_turn(self):
+        #Runs through the Turn class methods
+        print(f"The player is {self.player.name} (Player {str(self.player.order)})")
         self.counter()
         self.user_input()
         self.alter_gameboard()
