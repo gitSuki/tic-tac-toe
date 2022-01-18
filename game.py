@@ -2,6 +2,7 @@ import random
 
 class Game:
     turn_count = 0
+    game_state = True
     def __init__(self):
         self.welcome()
         self.get_usernames()
@@ -52,7 +53,7 @@ class Game:
         print(self.board)
 
     def game_loop(self):
-        while self.turn_count < 9:
+        while self.turn_count < 9 and self.game_state:
             #If turn count is odd, the player who was randomized to go first goes
             if self.turn_count % 2 != 0:
                 Turn(self, self.players_dict[1])
@@ -64,10 +65,10 @@ class Game:
 
 
 class Player:
-    def __init__(self, name, order, replace_string):
+    def __init__(self, name, order, user_mark):
         self.name = name
         self.order = order
-        self.replace_string = replace_string
+        self.mark = user_mark
 
 
 class Turn:
@@ -99,9 +100,27 @@ class Turn:
 
     def alter_gameboard(self):
         #Replaces the existing numbers on the gameboard with the user's mark
-        self.new_board = self.board.replace(self.user_input, self.player.replace_string)
+        self.new_board = self.board.replace(self.user_input, self.player.mark)
         print(self.new_board)
         self.game.board = self.new_board
+
+    def filter_gameboard(self):
+        #Filters through the gameboard and makes a list including only the remaining digits and player numbers
+        self.filter_list = ["X", "O", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        self.filtered_gameboard = []
+        for entry in list(self.game.board):
+            if entry in self.filter_list:
+                self.filtered_gameboard.append(entry)
+        print(self.filtered_gameboard)
+
+    def check_victory(self):
+        self.filter_gameboard()
+        #Horizontal Victory
+        if all(entry == self.player.mark for entry in self.filtered_gameboard[:3]) or \
+            all(entry == self.player.mark for entry in self.filtered_gameboard[3:6]) or \
+            all(entry == self.player.mark for entry in self.filtered_gameboard[6:]):
+            print(f"{self.player.name} won!")
+            self.game.game_state = False
         
     def run_turn(self):
         #Runs through the Turn class methods
@@ -109,6 +128,7 @@ class Turn:
         self.counter()
         self.user_input()
         self.alter_gameboard()
+        self.check_victory()
 
 
 game = Game()
