@@ -54,8 +54,8 @@ class Game:
 
     def game_loop(self):
         while self.turn_count < 9 and self.game_state:
-            #If turn count is odd, the player who was randomized to go first goes
-            if self.turn_count % 2 != 0:
+            #If turn count is odd (starting from 0), the player who was randomized to go first goes
+            if self.turn_count % 2 == 0:
                 Turn(self, self.players_dict[1])
             #Otherwise, the player who was randomized to go second goes
             else:
@@ -119,8 +119,20 @@ class Turn:
         if all(entry == self.player.mark for entry in self.filtered_gameboard[:3]) or \
             all(entry == self.player.mark for entry in self.filtered_gameboard[3:6]) or \
             all(entry == self.player.mark for entry in self.filtered_gameboard[6:]):
-            print(f"{self.player.name} won!")
-            self.game.game_state = False
+                print(f"{self.player.name} won!")
+                self.game.game_state = False
+
+        #Vertical Victory
+        if all(entry == self.player.mark for entry in self.filtered_gameboard[::3]) or \
+            all(entry == self.player.mark for entry in self.filtered_gameboard[1::3]) or \
+            all(entry == self.player.mark for entry in self.filtered_gameboard[2::3]):
+                print(f"{self.player.name} won!")
+                self.game.game_state = False
+                
+        #Diagonal Victory
+        if all(entry == self.player.mark for entry in [self.filtered_gameboard[0], self.filtered_gameboard[4], self.filtered_gameboard[8]]) or all(entry == self.player.mark for entry in [self.filtered_gameboard[2], self.filtered_gameboard[4], self.filtered_gameboard[6]]):
+                print(f"{self.player.name} won!")
+                self.game.game_state = False
         
     def run_turn(self):
         #Runs through the Turn class methods
