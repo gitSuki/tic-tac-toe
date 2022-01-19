@@ -61,7 +61,30 @@ class Game:
             else:
                 Turn(self, self.players_dict[2])
         else:
-            print("Game Over")
+            if self.game_state == True:
+                self.game_over(True)
+            else: pass
+
+    def game_over(self, tie, player_name = None, player_order = None):
+        #Prints a victory message asks the player and calls the continue method
+        if tie == True:
+            print(f"The game was a tie!")
+            self.ask_to_continue()
+        else:
+            print(f"Congratulations! {player_name} (Player {str(player_order)}) won!")
+            self.ask_to_continue()
+        
+    def ask_to_continue(self):
+        #Asks the player if they'd like to play another round
+        print('')
+        print("Would you like to play again?")
+        print('Type "Y" if you would like to play another game, otherwise type "N"')
+        continue_input = input()
+        if continue_input == "N" or continue_input == "n":
+            self.game_state = False
+        elif continue_input == "Y" or continue_input == "y":
+            print('')
+            Game()
 
 
 class Player:
@@ -111,35 +134,30 @@ class Turn:
         for entry in list(self.game.board):
             if entry in self.filter_list:
                 self.filtered_gameboard.append(entry)
-        print(self.filtered_gameboard)
 
     def check_victory(self):
-        self.filter_gameboard()
         #Horizontal Victory
         if all(entry == self.player.mark for entry in self.filtered_gameboard[:3]) or \
             all(entry == self.player.mark for entry in self.filtered_gameboard[3:6]) or \
             all(entry == self.player.mark for entry in self.filtered_gameboard[6:]):
-                print(f"{self.player.name} won!")
-                self.game.game_state = False
-
+                self.game.game_over(False, self.player.name, self.player.order)
         #Vertical Victory
-        if all(entry == self.player.mark for entry in self.filtered_gameboard[::3]) or \
+        elif all(entry == self.player.mark for entry in self.filtered_gameboard[::3]) or \
             all(entry == self.player.mark for entry in self.filtered_gameboard[1::3]) or \
             all(entry == self.player.mark for entry in self.filtered_gameboard[2::3]):
-                print(f"{self.player.name} won!")
-                self.game.game_state = False
-                
+                self.game.game_over(False, self.player.name, self.player.order)        
         #Diagonal Victory
-        if all(entry == self.player.mark for entry in [self.filtered_gameboard[0], self.filtered_gameboard[4], self.filtered_gameboard[8]]) or all(entry == self.player.mark for entry in [self.filtered_gameboard[2], self.filtered_gameboard[4], self.filtered_gameboard[6]]):
-                print(f"{self.player.name} won!")
-                self.game.game_state = False
-        
+        elif all(entry == self.player.mark for entry in [self.filtered_gameboard[0], self.filtered_gameboard[4], self.filtered_gameboard[8]]) or all(entry == self.player.mark for entry in [self.filtered_gameboard[2], self.filtered_gameboard[4], self.filtered_gameboard[6]]):
+                self.game.game_over(False, self.player.name, self.player.order)
+        else: pass
+
     def run_turn(self):
         #Runs through the Turn class methods
         print(f"The player is {self.player.name} (Player {str(self.player.order)})")
         self.counter()
         self.user_input()
         self.alter_gameboard()
+        self.filter_gameboard()
         self.check_victory()
 
 
