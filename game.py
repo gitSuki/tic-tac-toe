@@ -16,9 +16,6 @@ class Game:
     def welcome(self):
         print("Welcome to Tic-Tac-Toe!")
         print("")
-        print("Written by gitSuki in Python 3.8.10")
-        print("")
-        print("")
 
     def get_usernames(self):
         #Asks user to input usernames which are assigned to variables
