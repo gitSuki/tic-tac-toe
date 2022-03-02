@@ -1,7 +1,7 @@
 # tic-tac-toe
 A simple tic-tac-toe game for the console
 
-![image](https://user-images.githubusercontent.com/96004796/156298972-118d6e3d-a38f-4abd-8caa-108b89de969c.png)
+![image](https://user-images.githubusercontent.com/96004796/156301426-49f05279-6fed-4380-9157-ed66e1bfadff.png)
 
 ## Technologies
 * Python version: 3.80
@@ -10,4 +10,4 @@ A simple tic-tac-toe game for the console
 
 Player one is represented by "X" and player two by "0"
 
-![image](https://user-images.githubusercontent.com/96004796/156299268-fc7cc5f5-d98a-4094-8358-cd55c88b5291.png)
+![firefox_xv9fVzK5NI](https://user-images.githubusercontent.com/96004796/156301341-1ce64fee-8d07-4d7d-a557-94b2243e789b.gif)
